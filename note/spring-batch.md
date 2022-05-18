@@ -14,3 +14,6 @@
 ## 2、搭建 Spring Batch 項目
 
 - 使用 spring.io 創建 spring boot maven 項目，並 import 至 IDE 中
+- 批處理任務執行的相關信息(metadata)需要持久化儲存到資料庫中
+  - 未配置數據源專案會啟動失敗
+- 
