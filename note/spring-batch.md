@@ -15,9 +15,35 @@
 
 - 使用 spring.io 創建 spring boot maven 項目，並 import 至 IDE 中
 
+  
+
 - 批處理任務執行的相關信息(metadata)需要持久化儲存到資料庫中
 
   - 未配置數據源專案會啟動失敗
+
+  ```
+  Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+  2021-05-04 21:39:53.562 ERROR 13604 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+  
+  ***************************
+  APPLICATION FAILED TO START
+  ***************************
+  
+  Description:
+  
+  Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+  
+  Reason: Failed to determine a suitable driver class
+  
+  
+  Action:
+  
+  Consider the following:
+  	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+  	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+  ```
+
+  
 
 - pom.xml
 
@@ -26,14 +52,28 @@
   			<groupId>org.springframework.boot</groupId>
   			<artifactId>spring-boot-starter-batch</artifactId>
   		</dependency>
+  ```
   
+  
+  
+  ```xml
   		<dependency>
   			<groupId>com.h2database</groupId>
   			<artifactId>h2</artifactId>
   			<scope>runtime</scope>
   		</dependency>
   ```
-
+  
+  或
+  
+  ```xml
+          <dependency>
+              <groupId>org.hsqldb</groupId>
+              <artifactId>hsqldb</artifactId>
+              <scope>runtime</scope>
+          </dependency>
+  ```
+  
   
 
 ## 3、創建 Spring Batch 入門程序
@@ -102,3 +142,44 @@
 
   
 
+## 4、替換為 MySQL 數據庫
+
+- pom.xml
+
+  ```xml
+  		<dependency>
+  			<groupId>mysql</groupId>
+  			<artifactId>mysql-connector-java</artifactId>
+  			<scope>runtime</scope>
+  		</dependency>
+  
+  		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-jdbc</artifactId>
+  			<scope>runtime</scope>
+  		</dependency>
+  ```
+
+- application.properties
+
+  ```properties
+  # Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+  spring.datasource.driverClassName=com.mysql.jdbc.Driver
+  spring.datasource.url=jdbc:mysql://localhost:3306/SPRING_BATCH
+  spring.datasource.username=test
+  spring.datasource.password=test
+  # C:\Users\user\.m2\repository\org\springframework\batch\spring-batch-core\4.3.2\spring-batch-core-4.3.2.jar
+  spring.datasource.schema=classpath:/org/springframework/batch/core/schema-mysql.sql
+  # spring batch 初始化時執行 schema-mysql.sql
+  spring.batch.initialize-schema=always
+  ```
+
+- spring batch ER-diagram
+
+  ![spring batch ER-diagram](../docs/spring-batch.png)
+
+- 其他
+
+> https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-versions.html
+>
+> ![image-20210504224231239](spring-batch.assets/image-20210504224231239.png)
