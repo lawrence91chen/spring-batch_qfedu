@@ -183,3 +183,28 @@
 > https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-versions.html
 >
 > ![image-20210504224231239](spring-batch.assets/image-20210504224231239.png)
+
+
+
+## 5、核心 API
+
+![job-stereotypes-parameters](../assets/job-stereotypes-parameters.png)
+
+- JobInstance
+  - JobInstance 和 Job 的關係如同 Java 中實例與類的關係。
+  - Job 定義了一個工作流程，JobInstance 就是該工作流程的一個具體實例。
+  - 一個 Job 可以有多個 JobInstance 
+
+- JobParameters:
+  - 不同的 JobParameters 配置將產生不同的JobInstance。
+  - 使用相同的 JobParameters 運行同一 Job，會重複使用上一個 JobInstance
+  - 可以初步理解為 **JobInstance = Job + JobParameters** 
+
+- JobExecution:
+  - 表示 JobInstance 的一次運行
+  - 每次 JobInstance 的運行都會產生 1 個 JobExecution (包含 運行時間、狀態成功與否、...)
+- StepExecution:
+  - 類似於 JobExecution，表示 Step 的一次運行
+- ExecutionContext
+  - 表示每一個 StepExecution 的執行內容。包含開發人員需要在批處理執行中保留的任何資料，例如重新啟動所需的統計資訊或狀態資訊。
+
