@@ -24,9 +24,17 @@ public class JobDemo {
 	@Bean
 	public Job jobDemoJob() {
 		return jobBuilderFactory.get("jobDemoJob")
+//				.start(step1())
+//				.next(step2())
+//				.next(step3())
+//				.build();
+
+				// on、from、to、end
+				// fail、stopAndRestart
 				.start(step1())
-				.next(step2())
-				.next(step3())
+				.on("COMPLETED").to(step2())
+				.from(step2()).on("COMPLETED").to(step3())
+				.from(step3()).end()
 				.build();
 	}
 
