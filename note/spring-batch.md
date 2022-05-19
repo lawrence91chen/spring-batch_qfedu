@@ -1,5 +1,10 @@
 # Spring Batch
 
+- Ch1: 入門 (1~5)
+- Ch2: 作業流 (6~
+
+
+
 ## 1、SpringBatch 概述
 
 ![spring-batch-reference-model](../assets/spring-batch-reference-model.png)
@@ -208,3 +213,9 @@
 - ExecutionContext
   - 表示每一個 StepExecution 的執行內容。包含開發人員需要在批處理執行中保留的任何資料，例如重新啟動所需的統計資訊或狀態資訊。
 
+
+
+## 6、Job 的創建和使用
+
+- Job: 作業。批處理中的核心概念，是Batch操作的基礎單元。
+- 每個作業(Job)有 1 個或者多個作業步驟(Step)
