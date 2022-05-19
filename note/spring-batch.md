@@ -258,3 +258,10 @@ splitDemoStep3
 
 
 
+## 9、決策器的使用
+
+接口: JobExecutionDecider
+
+
+
+> on() 方法沒辦法滿足比較複雜的條件
