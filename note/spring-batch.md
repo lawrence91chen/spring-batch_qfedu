@@ -230,3 +230,31 @@
 
 > 可以組裝若干個 Step 成為一個 flow 給多個不同的 Job 複用。
 
+
+
+## 8、split 實現併發執行
+
+實現任務中的多個step或多個flow併發執行
+
+1. 創建若干個step
+2. 創建兩個flow
+3. 創建一個任務包含以上兩個flow，並讓這兩個 flow 併發執行
+
+```
+2022-05-19 18:43:12.904  INFO 20508 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [FlowJob: [name=splitDemoJob]] launched with the following parameters: [{}]
+2022-05-19 18:43:12.965  INFO 20508 --- [cTaskExecutor-2] o.s.batch.core.job.SimpleStepHandler     : Executing step: [splitDemoStep1]
+2022-05-19 18:43:12.987  INFO 20508 --- [cTaskExecutor-1] o.s.batch.core.job.SimpleStepHandler     : Executing step: [splitDemoStep2]
+splitDemoStep1
+splitDemoStep2
+2022-05-19 18:43:13.007  INFO 20508 --- [cTaskExecutor-2] o.s.batch.core.step.AbstractStep         : Step: [splitDemoStep1] executed in 42ms
+2022-05-19 18:43:13.023  INFO 20508 --- [cTaskExecutor-1] o.s.batch.core.step.AbstractStep         : Step: [splitDemoStep2] executed in 36ms
+2022-05-19 18:43:13.048  INFO 20508 --- [cTaskExecutor-1] o.s.batch.core.job.SimpleStepHandler     : Executing step: [splitDemoStep3]
+splitDemoStep3
+2022-05-19 18:43:13.073  INFO 20508 --- [cTaskExecutor-1] o.s.batch.core.step.AbstractStep         : Step: [splitDemoStep3] executed in 25ms
+2022-05-19 18:43:13.097  INFO 20508 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [FlowJob: [name=splitDemoJob]] completed with the following parameters: [{}] and the following status: [COMPLETED] in 170ms
+```
+
+![image-20220519184404502](spring-batch.assets/image-20220519184404502.png)
+
+
+
