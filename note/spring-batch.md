@@ -292,3 +292,19 @@ splitDemoStep3
   ```
 
 
+![image-20220520171237971](spring-batch.assets/image-20220520171237971.png)
+
+
+
+## 12、Job 參數
+
+在 Job 運行時可以用 `key=value` 形式傳遞參數
+
+
+
+程式執行時傳外部 program arguments
+
+```
+--info=MyInformation
+```
+
