@@ -273,3 +273,22 @@ splitDemoStep3
 一個 Job 可以嵌套在另一個 Job 中，被嵌套的 Job 稱為子Job，外部Job稱為父Job。子 Job 不能單獨執行，需要由父Job來啟動。
 
 - 案例: 創建兩個 Job，一個作為子 Job，再創建一個 Job 作為父 Job。
+
+
+
+## 11、監聽器的使用
+
+用來監聽批處理作業的執行情況
+創建監聽可以通過實現接口或使用注解
+(不僅限於監聽 Job)
+
+- 不同的監聽，以及觸發時機
+
+  ```
+  JobExecutionListener(before,after)
+  StepExecutionListener(before,after)
+  ChunkListener(before,after,error)
+  ItemReadListener,ItemProcessListener,ItemWriteListener(before,after,error)
+  ```
+
+

@@ -22,27 +22,27 @@ public class JobDemo {
 	@Bean
 	public Job jobDemoJob() {
 		return jobBuilderFactory.get("jobDemoJob")
-//				.start(step1())
-//				.next(step2())
-//				.next(step3())
+//				.start(jobDemoJobStep1())
+//				.next(jobDemoJobStep2())
+//				.next(jobDemoJobStep3())
 //				.build();
 
 				// on、from、to、end
 				// fail、stopAndRestart
-				.start(step1())
-				.on("COMPLETED").to(step2())
-				.from(step2()).on("COMPLETED").to(step3())
-				.from(step3()).end()
+				.start(jobDemoJobStep1())
+				.on("COMPLETED").to(jobDemoJobStep2())
+				.from(jobDemoJobStep2()).on("COMPLETED").to(jobDemoJobStep3())
+				.from(jobDemoJobStep3()).end()
 				.build();
 	}
 
 	@Bean
-	public Step step1() {
-		return stepBuilderFactory.get("step1").tasklet(new Tasklet() {
+	public Step jobDemoJobStep1() {
+		return stepBuilderFactory.get("jobDemoJobStep1").tasklet(new Tasklet() {
 
 			@Override
 			public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-				System.out.println("step1");
+				System.out.println("jobDemoJobStep1");
 
 				return RepeatStatus.FINISHED;
 			}
@@ -50,12 +50,12 @@ public class JobDemo {
 	}
 
 	@Bean
-	public Step step2() {
-		return stepBuilderFactory.get("step2").tasklet(new Tasklet() {
+	public Step jobDemoJobStep2() {
+		return stepBuilderFactory.get("jobDemoJobStep2").tasklet(new Tasklet() {
 
 			@Override
 			public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-				System.out.println("step2");
+				System.out.println("jobDemoJobStep2");
 
 				return RepeatStatus.FINISHED;
 			}
@@ -63,12 +63,12 @@ public class JobDemo {
 	}
 
 	@Bean
-	public Step step3() {
-		return stepBuilderFactory.get("step3").tasklet(new Tasklet() {
+	public Step jobDemoJobStep3() {
+		return stepBuilderFactory.get("jobDemoJobStep3").tasklet(new Tasklet() {
 
 			@Override
 			public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-				System.out.println("step3");
+				System.out.println("jobDemoJobStep3");
 
 				return RepeatStatus.FINISHED;
 			}
