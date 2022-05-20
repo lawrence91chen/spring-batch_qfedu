@@ -265,3 +265,11 @@ splitDemoStep3
 
 
 > on() 方法沒辦法滿足比較複雜的條件
+
+
+
+## 10、Job 的嵌套
+
+一個 Job 可以嵌套在另一個 Job 中，被嵌套的 Job 稱為子Job，外部Job稱為父Job。子 Job 不能單獨執行，需要由父Job來啟動。
+
+- 案例: 創建兩個 Job，一個作為子 Job，再創建一個 Job 作為父 Job。

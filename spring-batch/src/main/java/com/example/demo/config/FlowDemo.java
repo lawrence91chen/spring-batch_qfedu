@@ -3,7 +3,6 @@ package com.example.demo.config;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.builder.FlowBuilder;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableBatchProcessing
 public class FlowDemo {
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
@@ -33,7 +31,7 @@ public class FlowDemo {
 				.build();
 	}
 
-	/** 
+	/**
 	 * 創建 Flow 對象, 指明 F1ow 對象包含哪些 step。
 	 */
 	@Bean
