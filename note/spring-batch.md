@@ -319,3 +319,8 @@ splitDemoStep3
 
 ### 3.1、L13 - ItemReader 概述
 
+
+
+### 3.2、L14 - 從數據庫中讀取數據
+
+使用 JdbcPagingItemReader (ItemReader 的一個子類) 實現
