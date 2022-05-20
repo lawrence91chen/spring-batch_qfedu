@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.example.demo.listener.MyJobListener;
-
 @Configuration
 public class ParametersDemo implements StepExecutionListener {
 	@Autowired
@@ -33,7 +31,6 @@ public class ParametersDemo implements StepExecutionListener {
 	public Job parameterJob() {
 		return jobBuilderFactory.get("parameterJob")
 				.start(parameterStep())
-				.listener(new MyJobListener())
 				.build();
 	}
 

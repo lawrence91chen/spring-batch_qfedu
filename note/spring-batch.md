@@ -1,11 +1,14 @@
 # Spring Batch
 
 - Ch1: 入門 (1~5)
-- Ch2: 作業流 (6~
+- Ch2: 作業流 (6~12)
+- Ch3: 數據輸入 (13~
 
 
 
-## 1、SpringBatch 概述
+## 1、入門
+
+### 1.1、L01 - SpringBatch 概述
 
 ![spring-batch-reference-model](../assets/spring-batch-reference-model.png)
 
@@ -16,7 +19,7 @@
 
 
 
-## 2、搭建 Spring Batch 項目
+### 1.2、L02 -  搭建 Spring Batch 項目
 
 - 使用 spring.io 創建 spring boot maven 項目，並 import 至 IDE 中
 
@@ -81,7 +84,7 @@
   
   
 
-## 3、創建 Spring Batch 入門程序
+### 1.3、L03 -  創建 Spring Batch 入門程序
 
 - 創一個  Config 類 (@Configuration) 並加上 Batch 註解 `@EnableBatchProcessing`。
 
@@ -147,7 +150,7 @@
 
   
 
-## 4、替換為 MySQL 數據庫
+### 1.4、L04 - 替換為 MySQL 數據庫
 
 - pom.xml
 
@@ -191,7 +194,7 @@
 
 
 
-## 5、核心 API
+### 1.5、L05 - 核心 API
 
 ![job-stereotypes-parameters](../assets/job-stereotypes-parameters.png)
 
@@ -215,14 +218,16 @@
 
 
 
-## 6、Job 的創建和使用
+## 2、作業流
+
+### 2.1、L06 - Job 的創建和使用
 
 - Job: 作業。批處理中的核心概念，是Batch操作的基礎單元。
 - 每個作業(Job)有 1 個或者多個作業步驟(Step)
 
 
 
-## 7、Flow 的創建和使用
+### 2.2、L07 - Flow 的創建和使用
 
 1. Flow 是多個 Step 的集合
 2. 可以被多個 Job 複用
@@ -232,7 +237,7 @@
 
 
 
-## 8、split 實現併發執行
+### 2.3、L08 - split 實現併發執行
 
 實現任務中的多個step或多個flow併發執行
 
@@ -258,7 +263,7 @@ splitDemoStep3
 
 
 
-## 9、決策器的使用
+### 2.4、L09 - 決策器的使用
 
 接口: JobExecutionDecider
 
@@ -268,7 +273,7 @@ splitDemoStep3
 
 
 
-## 10、Job 的嵌套
+### 2.5、L10 - Job 的嵌套
 
 一個 Job 可以嵌套在另一個 Job 中，被嵌套的 Job 稱為子Job，外部Job稱為父Job。子 Job 不能單獨執行，需要由父Job來啟動。
 
@@ -276,7 +281,7 @@ splitDemoStep3
 
 
 
-## 11、監聽器的使用
+### 2.6、L11 - 監聽器的使用
 
 用來監聽批處理作業的執行情況
 創建監聽可以通過實現接口或使用注解
@@ -296,7 +301,7 @@ splitDemoStep3
 
 
 
-## 12、Job 參數
+### 2.7、L12 - Job 參數
 
 在 Job 運行時可以用 `key=value` 形式傳遞參數
 
@@ -307,4 +312,10 @@ splitDemoStep3
 ```
 --info=MyInformation
 ```
+
+
+
+## 3、數據輸入
+
+### 3.1、L13 - ItemReader 概述
 
