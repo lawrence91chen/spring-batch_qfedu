@@ -355,3 +355,9 @@ splitDemoStep3
 
 
 
+### 3.5、L17 - 從多個文件中讀取數據
+
+使用 MultiResourceItemReader
+
+
+
