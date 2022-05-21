@@ -361,3 +361,207 @@ splitDemoStep3
 
 
 
+### 3.6、L18 - ItemReader 異常處理及重啟
+
+ItemReader 讀取數據時發生異常該如何處理?
+
+發生異常 -> 任務結束 -> Spring Batch 提供的解決方案為何?
+
+實現 ItemStreamReader 接口 (ItemStream + ItemReader)
+
+
+
+![image-20220521174611433](spring-batch.assets/image-20220521174611433.png)
+
+#### 實際演示效果
+
+- restart.txt
+
+  ![image-20220521175548840](spring-batch.assets/image-20220521175548840.png)
+
+  ```
+  1,Stone,Barrett,1964-10-1914:11:03
+  2,Raymond,Pace,1977-12-1121:44:30
+  3,Armando,Logan,1986-12-2511:54:28
+  4,Latifah,Barnett,1959-07-2406:00:16
+  5,Cassandra,Moses,1956-09-1406:49:28
+  6,Audra,Hopkins,1984-08-3004:18:10
+  7,Upton,Morrow,1973-02-0405:26:05
+  8,Melodie,Velasquez,1953-04-2611:16:26
+  9,sybill,Nolan,1951-06-2414:56:51
+  10,Glenna,Little,1953-08-2713:15:08
+  11,Ingrid,Jackson,1957-09-0521:36:47
+  12,Duncan,Castaneda,1979-01-2118:31:27
+  13,Xaviera,Gillespie,1965-07-1815:05:22
+  14,Rhoda,Lancaster,1990-09-1115:52:54
+  15,Fatima,Combs,1979-06-0106:58:54
+  16,Merri1l,Hopkins,1990-07-0217:36:35
+  17,Felicia,Vinson,1959-12-1920:23:12
+  18,Hanae,Harvey,1984-12-2710:36:49
+  19,Ramona,Acosta,1962-06-2320:03:40
+  20,Katelyn,Hammond,1988-11-1219:05:13
+  21,Aa,Kk,1957-09-0521:36:47
+  22,Bb,Ll,1979-01-2118:31:27
+  23,Cc,Mm,1965-07-1815:05:22
+  24,Dd,Nn,1990-09-1115:52:54
+  25,WrongName,Oo,1979-06-0106:58:54
+  26,Ff,Pp,1990-07-0217:36:35
+  27,Gg,Qq,1959-12-1920:23:12
+  28,Hh,Rr,1984-12-2710:36:49
+  29,Ii,Ss,1962-06-2320:03:40
+  30,Jj,Tt,1988-11-1219:05:13
+  ```
+
+- 第一次執行
+
+  ![image-20220521175445044](spring-batch.assets/image-20220521175445044.png)
+
+  ```
+  2022-05-21 17:52:57.298  INFO 30964 --- [           main] o.s.b.a.b.JobLauncherApplicationRunner   : Running default command line with: [info=MyInformation]
+  2022-05-21 17:52:57.384  INFO 30964 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=restartDemoJob]] launched with the following parameters: [{info=MyInformation}]
+  2022-05-21 17:52:57.433  INFO 30964 --- [           main] o.s.batch.core.job.SimpleStepHandler     : Executing step: [restartDemoStep]
+  Start reading from line: 01
+  curLine: 0
+  Customer(id=1, firstName=Stone, lastName=Barrett, birthday=1964-10-1914:11:03)
+  Customer(id=2, firstName=Raymond, lastName=Pace, birthday=1977-12-1121:44:30)
+  Customer(id=3, firstName=Armando, lastName=Logan, birthday=1986-12-2511:54:28)
+  Customer(id=4, firstName=Latifah, lastName=Barnett, birthday=1959-07-2406:00:16)
+  Customer(id=5, firstName=Cassandra, lastName=Moses, birthday=1956-09-1406:49:28)
+  Customer(id=6, firstName=Audra, lastName=Hopkins, birthday=1984-08-3004:18:10)
+  Customer(id=7, firstName=Upton, lastName=Morrow, birthday=1973-02-0405:26:05)
+  Customer(id=8, firstName=Melodie, lastName=Velasquez, birthday=1953-04-2611:16:26)
+  Customer(id=9, firstName=sybill, lastName=Nolan, birthday=1951-06-2414:56:51)
+  Customer(id=10, firstName=Glenna, lastName=Little, birthday=1953-08-2713:15:08)
+  curLine: 10
+  Customer(id=11, firstName=Ingrid, lastName=Jackson, birthday=1957-09-0521:36:47)
+  Customer(id=12, firstName=Duncan, lastName=Castaneda, birthday=1979-01-2118:31:27)
+  Customer(id=13, firstName=Xaviera, lastName=Gillespie, birthday=1965-07-1815:05:22)
+  Customer(id=14, firstName=Rhoda, lastName=Lancaster, birthday=1990-09-1115:52:54)
+  Customer(id=15, firstName=Fatima, lastName=Combs, birthday=1979-06-0106:58:54)
+  Customer(id=16, firstName=Merri1l, lastName=Hopkins, birthday=1990-07-0217:36:35)
+  Customer(id=17, firstName=Felicia, lastName=Vinson, birthday=1959-12-1920:23:12)
+  Customer(id=18, firstName=Hanae, lastName=Harvey, birthday=1984-12-2710:36:49)
+  Customer(id=19, firstName=Ramona, lastName=Acosta, birthday=1962-06-2320:03:40)
+  Customer(id=20, firstName=Katelyn, lastName=Hammond, birthday=1988-11-1219:05:13)
+  curLine: 20
+  2022-05-21 17:52:57.478 ERROR 30964 --- [           main] o.s.batch.core.step.AbstractStep         : Encountered an error executing step restartDemoStep in job restartDemoJob
+  
+  java.lang.RuntimeException: Something wrong. customer.id=[25]
+  	at com.example.demo.config.data.restart.RestartReader.read(RestartReader.java:74) ~[classes/:na]
+  	at com.example.demo.config.data.restart.RestartReader.read(RestartReader.java:1) ~[classes/:na]
+  	at org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375) ~[spring-batch-infrastructure-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215) ~[spring-batch-infrastructure-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145) ~[spring-batch-infrastructure-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:71) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140) ~[spring-tx-5.3.19.jar:5.3.19]
+  	at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:273) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:82) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375) ~[spring-batch-infrastructure-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215) ~[spring-batch-infrastructure-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145) ~[spring-batch-infrastructure-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.tasklet.TaskletStep.doExecute(TaskletStep.java:258) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:208) ~[spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:152) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.job.AbstractJob.handleStep(AbstractJob.java:413) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.job.SimpleJob.doExecute(SimpleJob.java:136) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.job.AbstractJob.execute(AbstractJob.java:320) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.batch.core.launch.support.SimpleJobLauncher$1.run(SimpleJobLauncher.java:149) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:50) [spring-core-5.3.19.jar:5.3.19]
+  	at org.springframework.batch.core.launch.support.SimpleJobLauncher.run(SimpleJobLauncher.java:140) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_171-1-ojdkbuild]
+  	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_171-1-ojdkbuild]
+  	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_171-1-ojdkbuild]
+  	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_171-1-ojdkbuild]
+  	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344) [spring-aop-5.3.19.jar:5.3.19]
+  	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:198) [spring-aop-5.3.19.jar:5.3.19]
+  	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-5.3.19.jar:5.3.19]
+  	at org.springframework.batch.core.configuration.annotation.SimpleBatchConfiguration$PassthruAdvice.invoke(SimpleBatchConfiguration.java:128) [spring-batch-core-4.3.5.jar:4.3.5]
+  	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) [spring-aop-5.3.19.jar:5.3.19]
+  	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:215) [spring-aop-5.3.19.jar:5.3.19]
+  	at com.sun.proxy.$Proxy49.run(Unknown Source) [na:na]
+  	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.execute(JobLauncherApplicationRunner.java:199) [spring-boot-autoconfigure-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.executeLocalJobs(JobLauncherApplicationRunner.java:173) [spring-boot-autoconfigure-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.launchJobFromProperties(JobLauncherApplicationRunner.java:160) [spring-boot-autoconfigure-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.run(JobLauncherApplicationRunner.java:155) [spring-boot-autoconfigure-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.run(JobLauncherApplicationRunner.java:150) [spring-boot-autoconfigure-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:768) [spring-boot-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:758) [spring-boot-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.SpringApplication.run(SpringApplication.java:310) [spring-boot-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1312) [spring-boot-2.6.7.jar:2.6.7]
+  	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301) [spring-boot-2.6.7.jar:2.6.7]
+  	at com.example.demo.SpringBatchApplication.main(SpringBatchApplication.java:15) [classes/:na]
+  
+  2022-05-21 17:52:57.483  INFO 30964 --- [           main] o.s.batch.core.step.AbstractStep         : Step: [restartDemoStep] executed in 50ms
+  2022-05-21 17:52:57.500  INFO 30964 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=restartDemoJob]] completed with the following parameters: [{info=MyInformation}] and the following status: [FAILED] in 94ms
+  ```
+
+- 修改 restart.txt
+
+  ![image-20220521175627118](spring-batch.assets/image-20220521175627118.png)
+
+  ```
+  1,Stone,Barrett,1964-10-1914:11:03
+  2,Raymond,Pace,1977-12-1121:44:30
+  3,Armando,Logan,1986-12-2511:54:28
+  4,Latifah,Barnett,1959-07-2406:00:16
+  5,Cassandra,Moses,1956-09-1406:49:28
+  6,Audra,Hopkins,1984-08-3004:18:10
+  7,Upton,Morrow,1973-02-0405:26:05
+  8,Melodie,Velasquez,1953-04-2611:16:26
+  9,sybill,Nolan,1951-06-2414:56:51
+  10,Glenna,Little,1953-08-2713:15:08
+  11,Ingrid,Jackson,1957-09-0521:36:47
+  12,Duncan,Castaneda,1979-01-2118:31:27
+  13,Xaviera,Gillespie,1965-07-1815:05:22
+  14,Rhoda,Lancaster,1990-09-1115:52:54
+  15,Fatima,Combs,1979-06-0106:58:54
+  16,Merri1l,Hopkins,1990-07-0217:36:35
+  17,Felicia,Vinson,1959-12-1920:23:12
+  18,Hanae,Harvey,1984-12-2710:36:49
+  19,Ramona,Acosta,1962-06-2320:03:40
+  20,Katelyn,Hammond,1988-11-1219:05:13
+  21,Aa,Kk,1957-09-0521:36:47
+  22,Bb,Ll,1979-01-2118:31:27
+  23,Cc,Mm,1965-07-1815:05:22
+  24,Dd,Nn,1990-09-1115:52:54
+  25,WrongName,Oo,1979-06-0106:58:54
+  26,Ff,Pp,1990-07-0217:36:35
+  27,Gg,Qq,1959-12-1920:23:12
+  28,Hh,Rr,1984-12-2710:36:49
+  29,Ii,Ss,1962-06-2320:03:40
+  30,Jj,Tt,1988-11-1219:05:13
+  ```
+
+- 再次重啟
+
+  ![image-20220521175826057](spring-batch.assets/image-20220521175826057.png)
+
+  ```
+  2022-05-21 17:57:31.804  INFO 39544 --- [           main] o.s.b.a.b.JobLauncherApplicationRunner   : Running default command line with: [info=MyInformation]
+  2022-05-21 17:57:31.932  INFO 39544 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=restartDemoJob]] launched with the following parameters: [{info=MyInformation}]
+  2022-05-21 17:57:31.982  INFO 39544 --- [           main] o.s.batch.core.job.SimpleStepHandler     : Executing step: [restartDemoStep]
+  curLine: 20
+  Start reading from line: 21
+  Customer(id=21, firstName=Aa, lastName=Kk, birthday=1957-09-0521:36:47)
+  Customer(id=22, firstName=Bb, lastName=Ll, birthday=1979-01-2118:31:27)
+  Customer(id=23, firstName=Cc, lastName=Mm, birthday=1965-07-1815:05:22)
+  Customer(id=24, firstName=Dd, lastName=Nn, birthday=1990-09-1115:52:54)
+  Customer(id=25, firstName=Ee, lastName=Oo, birthday=1979-06-0106:58:54)
+  Customer(id=26, firstName=Ff, lastName=Pp, birthday=1990-07-0217:36:35)
+  Customer(id=27, firstName=Gg, lastName=Qq, birthday=1959-12-1920:23:12)
+  Customer(id=28, firstName=Hh, lastName=Rr, birthday=1984-12-2710:36:49)
+  Customer(id=29, firstName=Ii, lastName=Ss, birthday=1962-06-2320:03:40)
+  Customer(id=30, firstName=Jj, lastName=Tt, birthday=1988-11-1219:05:13)
+  curLine: 30
+  curLine: 31
+  2022-05-21 17:57:32.037  INFO 39544 --- [           main] o.s.batch.core.step.AbstractStep         : Step: [restartDemoStep] executed in 55ms
+  2022-05-21 17:57:32.056  INFO 39544 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=restartDemoJob]] completed with the following parameters: [{info=MyInformation}] and the following status: [COMPLETED] in 102ms
+  ```
+
+  
