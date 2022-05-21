@@ -15,3 +15,11 @@ INSERT INTO user(username, password, age) VALUES
 ("Ben", "333", 31),
 ("Jason", "555", 51),
 ("Woody", "666", 61);
+
+
+CREATE TABLE customer(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	firstName VARCHAR(50),
+	lastName VARCHAR(50),
+	birthday VARCHAR(50)
+);
