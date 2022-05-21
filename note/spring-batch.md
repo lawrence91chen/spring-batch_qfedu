@@ -2,7 +2,8 @@
 
 - Ch1: 入門 (1~5)
 - Ch2: 作業流 (6~12)
-- Ch3: 數據輸入 (13~
+- Ch3: 數據輸入 (13~18)
+- Ch4: 數據輸出 (19~
 
 
 
@@ -679,3 +680,7 @@ MySQL 可使用 JdbcBatchltemWriter
 
 
 
+### 4.5、L23 - 將數據輸出到多個文件
+
+- CompositeltemWriter
+- CassifireCompositeltemWriter 根據分類寫入不同文件
