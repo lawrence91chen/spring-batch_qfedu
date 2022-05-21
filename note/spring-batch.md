@@ -331,3 +331,27 @@ splitDemoStep3
 
 使用 FlatFileItemReader 實現
 
+
+
+### 3.4、L16 - 從 XML 文件中讀取數據
+
+使用 StaxEventItemReader
+
+
+
+- pom.xml
+
+  ```xml
+  		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-oxm</artifactId>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.thoughtworks.xstream</groupId>
+  			<artifactId>xstream</artifactId>
+  			<version>1.4.19</version>
+  		</dependency>
+  ```
+
+
+
