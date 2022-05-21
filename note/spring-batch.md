@@ -630,3 +630,52 @@ MySQL 可使用 JdbcBatchltemWriter
 ![image-20220521224430089](spring-batch.assets/image-20220521224430089.png)
 
 ![image-20220521224415449](spring-batch.assets/image-20220521224415449.png)
+
+
+
+### 4.4、L22 - 數據輸出到 XML 文件
+
+使用 StaxEvenltemWriter
+
+
+
+- user.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <users>
+      <user>
+          <id>1</id>
+          <username>Kevin</username>
+          <password>111</password>
+          <age>11</age>
+      </user>
+      <user>
+          <id>2</id>
+          <username>Roger</username>
+          <password>222</password>
+          <age>21</age>
+      </user>
+      <user>
+          <id>3</id>
+          <username>Ben</username>
+          <password>333</password>
+          <age>31</age>
+      </user>
+      <user>
+          <id>4</id>
+          <username>Jason</username>
+          <password>555</password>
+          <age>51</age>
+      </user>
+      <user>
+          <id>5</id>
+          <username>Woody</username>
+          <password>666</password>
+          <age>61</age>
+      </user>
+  </users>
+  ```
+
+
+
