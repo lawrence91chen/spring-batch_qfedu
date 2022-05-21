@@ -619,3 +619,14 @@ MySQL 可使用 JdbcBatchltemWriter
 
   ![image-20220521222142817](spring-batch.assets/image-20220521222142817.png)
 
+
+
+### 4.3、L21 - 數據輸出到普通文件
+
+使用 FlatFileItemWriter
+
+(案例: 從數據庫中讀取數據後寫入到文件)
+
+![image-20220521224430089](spring-batch.assets/image-20220521224430089.png)
+
+![image-20220521224415449](spring-batch.assets/image-20220521224415449.png)
