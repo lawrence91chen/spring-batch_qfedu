@@ -1,4 +1,4 @@
-package com.example.demo.config.data.restart;
+package com.example.demo.config.read.restart;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.example.demo.config.data.Customer;
+import com.example.demo.config.read.Customer;
 
 @Configuration
 public class RestartDemo {

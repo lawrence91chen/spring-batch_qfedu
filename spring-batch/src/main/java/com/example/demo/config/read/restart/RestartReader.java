@@ -1,4 +1,4 @@
-package com.example.demo.config.data.restart;
+package com.example.demo.config.read.restart;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -15,7 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
-import com.example.demo.config.data.Customer;
+import com.example.demo.config.read.Customer;
 
 @Component("restartReader")
 public class RestartReader implements ItemStreamReader<Customer> {

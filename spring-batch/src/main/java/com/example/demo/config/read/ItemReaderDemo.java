@@ -1,4 +1,4 @@
-package com.example.demo.config.data;
+package com.example.demo.config.read;
 
 import java.util.Arrays;
 import java.util.List;

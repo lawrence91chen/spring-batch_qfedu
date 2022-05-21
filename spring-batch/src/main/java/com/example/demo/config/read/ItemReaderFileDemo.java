@@ -1,4 +1,4 @@
-package com.example.demo.config.data;
+package com.example.demo.config.read;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -7,69 +7,58 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.validation.BindException;
 
 @Configuration
-public class ItemReaderMultiFileDemo {
+public class ItemReaderFileDemo {
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
 	@Autowired
 	private StepBuilderFactory stepBuilderFactory;
 
 	@Autowired
-	@Qualifier("multiFileWriter")
-	private ItemWriter<? super Customer> multiFileWriter;
-
-	@Value("classpath:/file*.txt")
-	private Resource[] fileResources;
+	@Qualifier("flatFileWriter")
+	private ItemWriter<? super Customer> flatFileWriter;
 
 	@Bean
-	public Job itemReaderMultiFileDemoJob() {
-		return jobBuilderFactory.get("itemReaderMultiFileDemoJob")
-				.start(itemReaderMultiFileDemoStep())
+	public Job itemReaderFileDemoJob() {
+		return jobBuilderFactory.get("itemReaderFileDemoJob")
+				.start(itemReaderFileDemoStep())
 				.build();
 	}
 
 	@Bean
-	public Step itemReaderMultiFileDemoStep() {
-		return stepBuilderFactory.get("itemReaderMultiFileDemoStep")
+	public Step itemReaderFileDemoStep() {
+		return stepBuilderFactory.get("itemReaderFileDemoStep")
 				.<Customer, Customer>chunk(5)
-				.reader(multiFileReader())
-				.writer(multiFileWriter)
+				.reader(flatFileReader())
+				.writer(flatFileWriter)
 				.build();
 	}
 
-	// 雖說是多文件讀取，但其實是逐個讀取單個文件
 	@Bean
 	@StepScope
-	public MultiResourceItemReader<Customer> multiFileReader() {
-
-		MultiResourceItemReader<Customer> reader = new MultiResourceItemReader<>();
-		// 從單個文件讀取的功能
-		reader.setDelegate(flatFileDelegateReader());
-		reader.setResources(fileResources);
-
-		return reader;
-	}
-
-	@Bean
-	public FlatFileItemReader<Customer> flatFileDelegateReader() {
+	public FlatFileItemReader<Customer> flatFileReader() {
 		FlatFileItemReader<Customer> reader = new FlatFileItemReader<>();
+		// 指定 classpath 下的文件檔進行讀取
+		reader.setResource(new ClassPathResource("customer.txt"));
+		// 跳過第一行表頭
+		reader.setLinesToSkip(1);
 		// 數據解析
 		DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+		// 指名表頭字段
 		tokenizer.setNames("id", "firstName", "lastName", "birthday");
-		// 把解析出的一個數據映射為Customer對象
+
+		// 把解析出的一行數據映射為 Customer 對象
 		DefaultLineMapper<Customer> mapper = new DefaultLineMapper<>();
 		mapper.setLineTokenizer(tokenizer);
 		mapper.setFieldSetMapper(new FieldSetMapper<Customer>() {
@@ -80,11 +69,12 @@ public class ItemReaderMultiFileDemo {
 				customer.setFirstName(fieldSet.readString("firstName"));
 				customer.setLastName(fieldSet.readString("lastName"));
 				customer.setBirthday(fieldSet.readString("birthday"));
+
 				return customer;
 			}
 		});
-		mapper.afterPropertiesSet();
 
+		mapper.afterPropertiesSet(); // 檢查
 		reader.setLineMapper(mapper);
 
 		return reader;
