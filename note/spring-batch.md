@@ -722,3 +722,161 @@ CompositeltemProcessor 類: 處理多種 ItemProcessor 處理方式
 
   ![image-20220522174815652](spring-batch.assets/image-20220522174815652.png)
 
+
+
+### 5.2、L26 - 錯誤重試(Retry)
+
+默認情況下當任務出現異常時，Spring Batch 會結束任務。
+
+若我們不希望任務停止，可以使用 Retry 策略讓任務重試
+
+
+
+演示:
+
+```
+2022-05-22 18:14:09.896  INFO 17248 --- [           main] com.example.demo.SpringBatchApplication  : Started SpringBatchApplication in 1.632 seconds (JVM running for 2.459)
+2022-05-22 18:14:09.898  INFO 17248 --- [           main] o.s.b.a.b.JobLauncherApplicationRunner   : Running default command line with: [info=MyInformation]
+2022-05-22 18:14:09.977  INFO 17248 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=retryDemoJob]] launched with the following parameters: [{info=MyInformation}]
+2022-05-22 18:14:10.013  INFO 17248 --- [           main] o.s.batch.core.job.SimpleStepHandler     : Executing step: [retryDemoStep]
+processing item: 0
+processing item: 1
+processing item: 2
+processing item: 3
+processing item: 4
+processing item: 5
+processing item: 6
+processing item: 7
+processing item: 8
+processing item: 9
+write: 0
+write: -1
+write: -2
+write: -3
+write: -4
+write: -5
+write: -6
+write: -7
+write: -8
+write: -9
+processing item: 10
+processing item: 11
+processing item: 12
+processing item: 13
+processing item: 14
+processing item: 15
+processing item: 16
+processing item: 17
+processing item: 18
+processing item: 19
+write: -10
+write: -11
+write: -12
+write: -13
+write: -14
+write: -15
+write: -16
+write: -17
+write: -18
+write: -19
+processing item: 20
+processing item: 21
+processing item: 22
+processing item: 23
+processing item: 24
+processing item: 25
+processing item: 26
+Processed the [1] times fail.
+processing item: 20
+processing item: 21
+processing item: 22
+processing item: 23
+processing item: 24
+processing item: 25
+processing item: 26
+Processed the [2] times fail.
+processing item: 20
+processing item: 21
+processing item: 22
+processing item: 23
+processing item: 24
+processing item: 25
+processing item: 26
+Retried [3] times success.
+processing item: 27
+processing item: 28
+processing item: 29
+write: -20
+write: -21
+write: -22
+write: -23
+write: -24
+write: -25
+write: -26
+write: -27
+write: -28
+write: -29
+processing item: 30
+processing item: 31
+processing item: 32
+processing item: 33
+processing item: 34
+processing item: 35
+processing item: 36
+processing item: 37
+processing item: 38
+processing item: 39
+write: -30
+write: -31
+write: -32
+write: -33
+write: -34
+write: -35
+write: -36
+write: -37
+write: -38
+write: -39
+processing item: 40
+processing item: 41
+processing item: 42
+processing item: 43
+processing item: 44
+processing item: 45
+processing item: 46
+processing item: 47
+processing item: 48
+processing item: 49
+write: -40
+write: -41
+write: -42
+write: -43
+write: -44
+write: -45
+write: -46
+write: -47
+write: -48
+write: -49
+processing item: 50
+processing item: 51
+processing item: 52
+processing item: 53
+processing item: 54
+processing item: 55
+processing item: 56
+processing item: 57
+processing item: 58
+processing item: 59
+write: -50
+write: -51
+write: -52
+write: -53
+write: -54
+write: -55
+write: -56
+write: -57
+write: -58
+write: -59
+2022-05-22 18:14:10.083  INFO 17248 --- [           main] o.s.batch.core.step.AbstractStep         : Step: [retryDemoStep] executed in 69ms
+2022-05-22 18:14:10.096  INFO 17248 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=retryDemoJob]] completed with the following parameters: [{info=MyInformation}] and the following status: [COMPLETED] in 99ms
+```
+
