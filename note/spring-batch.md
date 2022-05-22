@@ -1062,3 +1062,32 @@ write: -59
   ```
 
   
+
+演示:
+
+![image-20220522185921033](spring-batch.assets/image-20220522185921033.png)
+
+![image-20220522190004139](spring-batch.assets/image-20220522190004139.png)
+
+
+
+### 6.2、L30 - JobOperator 的使用
+
+實際上是對 JobLauncher 的封裝，比 JobLauncher 更強大，但使用起來也相對複雜。
+
+
+
+演示:
+
+![image-20220522192332446](spring-batch.assets/image-20220522192332446.png)
+
+```
+2022-05-22 19:22:33.016  INFO 42868 --- [nio-8080-exec-1] o.s.b.c.l.support.SimpleJobOperator      : Checking status of job with name=jobOperatorDemoJob
+2022-05-22 19:22:33.046  INFO 42868 --- [nio-8080-exec-1] o.s.b.c.l.support.SimpleJobOperator      : Attempting to launch job with name=jobOperatorDemoJob and parameters=msg=run-with-job-op
+2022-05-22 19:22:33.087  INFO 42868 --- [nio-8080-exec-1] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=jobOperatorDemoJob]] launched with the following parameters: [{msg=run-with-job-op}]
+2022-05-22 19:22:33.121  INFO 42868 --- [nio-8080-exec-1] o.s.batch.core.job.SimpleStepHandler     : Executing step: [jobOperatorDemoStep]
+Got msg: run-with-job-op
+2022-05-22 19:22:33.140  INFO 42868 --- [nio-8080-exec-1] o.s.batch.core.step.AbstractStep         : Step: [jobOperatorDemoStep] executed in 18ms
+2022-05-22 19:22:33.149  INFO 42868 --- [nio-8080-exec-1] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=jobOperatorDemoJob]] completed with the following parameters: [{msg=run-with-job-op}] and the following status: [COMPLETED] in 44ms
+```
+
