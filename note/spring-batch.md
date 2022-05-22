@@ -3,7 +3,7 @@
 - Ch1: 入門 (1~5)
 - Ch2: 作業流 (6~12)
 - Ch3: 數據輸入 (13~18)
-- Ch4: 數據輸出 (19~
+- Ch4: 數據輸出 (19~24)
 
 
 
@@ -684,3 +684,18 @@ MySQL 可使用 JdbcBatchltemWriter
 
 - CompositeItemWriter
 - ClassifierCompositeItemWriter根據分類寫入不同文件
+
+
+
+### 4.6、L24 - ItemProcessor 的使用
+
+ItemProcessor<I,O>: 用於處理業務邏輯，驗證，過濾等功能 (I: reader 的數據類型、O: writer 的數據類型)
+CompositeltemProcessor 類: 處理多種 ItemProcessor 處理方式
+案例: 從數據庫中讀取數據，然對數據進行處理，最後輸出到普通文件
+
+![image-20220522172846407](spring-batch.assets/image-20220522172846407.png)
+
+![image-20220522172927134](spring-batch.assets/image-20220522172927134.png)
+
+
+
