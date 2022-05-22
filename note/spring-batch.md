@@ -4,6 +4,7 @@
 - Ch2: 作業流 (6~12)
 - Ch3: 數據輸入 (13~18)
 - Ch4: 數據輸出 (19~24)
+- Ch5: 錯誤處理(25~)
 
 
 
@@ -698,4 +699,26 @@ CompositeltemProcessor 類: 處理多種 ItemProcessor 處理方式
 ![image-20220522172927134](spring-batch.assets/image-20220522172927134.png)
 
 
+
+## 5、錯誤處理
+
+### 5.1、L25 - 錯誤處理概述
+
+默認情況下當任務出現異常時，Spring Batch 會結束任務，當使用相同的參數重啟任務時，Spring Batch 會去執行未執行的剩餘任務。
+
+
+
+演示:
+
+- 第 1 次執行
+
+  ![image-20220522174614642](spring-batch.assets/image-20220522174614642.png)
+
+- 第 2 次執行
+
+  ![image-20220522174738221](spring-batch.assets/image-20220522174738221.png)
+
+- 第 3 次執行
+
+  ![image-20220522174815652](spring-batch.assets/image-20220522174815652.png)
 
