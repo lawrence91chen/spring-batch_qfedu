@@ -682,5 +682,5 @@ MySQL 可使用 JdbcBatchltemWriter
 
 ### 4.5、L23 - 將數據輸出到多個文件
 
-- CompositeltemWriter
-- CassifireCompositeltemWriter 根據分類寫入不同文件
+- CompositeItemWriter
+- ClassifierCompositeItemWriter根據分類寫入不同文件

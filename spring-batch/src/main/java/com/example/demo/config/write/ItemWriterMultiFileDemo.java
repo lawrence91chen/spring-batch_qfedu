@@ -5,6 +5,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemStreamWriter;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,13 @@ public class ItemWriterMultiFileDemo {
 	@Qualifier("multiFileItemWriter")
 	private ItemWriter<? super User> multiFileItemWriter;
 
+	@Autowired
+	@Qualifier("fileItemWriter")
+	private ItemStreamWriter<? super User> fileItemWriter;
+	@Autowired
+	@Qualifier("xmlItemWriter")
+	private ItemStreamWriter<? super User> xmlItemWriter;
+
 	@Bean
 	public Job itemWriterMultiFileDemoJob() {
 		return jobBuilderFactory.get("itemWriterMultiFileDemoJob")
@@ -40,6 +48,9 @@ public class ItemWriterMultiFileDemo {
 				.<User, User>chunk(5)
 				.reader(dbJdbcReader)
 				.writer(multiFileItemWriter)
+				// ClassifierCompositeItemWriter 沒有實現 ItemStream
+				.stream(fileItemWriter)
+				.stream(xmlItemWriter)
 				.build();
 	}
 }
