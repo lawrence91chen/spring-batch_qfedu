@@ -4,7 +4,8 @@
 - Ch2: 作業流 (6~12)
 - Ch3: 數據輸入 (13~18)
 - Ch4: 數據輸出 (19~24)
-- Ch5: 錯誤處理(25~)
+- Ch5: 錯誤處理(25~28)
+- Ch6: 作業調度(29~30)
 
 
 
@@ -1030,3 +1031,34 @@ write: -59
 因為被跳過的數據在處理的過程中就沒有了，如果想記錄一些和錯誤相關的訊息就可以使用 Skip Listener
 
 ![image-20220522183514281](spring-batch.assets/image-20220522183514281.png)
+
+
+
+## 6、作業調度
+
+### 6.1、L29 - JobLauncher 的使用
+
+控制任務什麼時候啟動
+
+- 轉為 web 服務
+
+  pom.xml
+
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+  ```
+
+  
+
+- 程序啟動時不執行任務
+
+  application.properties
+
+  ```properties
+  spring.batch.job.enabled=false
+  ```
+
+  
