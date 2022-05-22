@@ -1023,3 +1023,10 @@ write: -59
 2022-05-22 18:22:04.908  INFO 14920 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=skipDemoJob]] completed with the following parameters: [{info=MyInformation}] and the following status: [COMPLETED] in 148ms
 ```
 
+
+
+### 5.4、L28 - 錯誤跳過監聽器(Skip Listener)
+
+因為被跳過的數據在處理的過程中就沒有了，如果想記錄一些和錯誤相關的訊息就可以使用 Skip Listener
+
+![image-20220522183514281](spring-batch.assets/image-20220522183514281.png)
