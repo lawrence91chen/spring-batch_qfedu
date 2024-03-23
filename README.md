@@ -16,3 +16,20 @@ A Spring Batch tutorial By qfedu(mobiletrain)
 ## Ref Articles
 
 - https://www.gushiciku.cn/pl/gu1b/zh-tw
+
+
+
+
+
+## ToCheck
+
+- batch 4.0之後可以像後端接口那樣訪問job，一個job有一個接口
+
+- L23
+
+  ```
+  2022-05-21 23:24:12.304  WARN 12644 --- [ionShutdownHook] o.s.b.f.support.DisposableBeanAdapter    : Custom destroy method 'close' on bean with name 'multiFileItemWriter' threw an exception: java.lang.NullPointerException
+  2022-05-21 23:24:12.304  WARN 12644 --- [ionShutdownHook] o.s.b.f.support.DisposableBeanAdapter    : Custom destroy method 'close' on bean with name 'xmlItemWriter' threw an exception: java.lang.NullPointerException
+  ```
+
+  
